@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weather Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='weather.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body data-hasweather="{% if weather %}yes{% else %}no{% endif %}"
+      data-condition="{% if weather %}{{ weather.current.condition.text }}{% endif %}">
+
+
+
+
+<div class="rain-layer hidden"></div>
+<div class="snow-layer hidden"></div>
+
+<div class="app">
+
+
+<div class="header">
+
+<form class="Search-form" method="POST">
+<input class="city-input" name="city" placeholder="Search city" required>
+<button class="search-btn">
+<i class="material-icons">search</i>
+</button>
+</form>
+
+<button class="theme-toggle">
+<i class="material-icons">dark_mode</i>
+</button>
+
+</div>
+
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+
+
+
+{% if not weather %}
+<div class="welcome-screen">
+
+<i class="material-icons welcome-icon">cloud</i>
+<h2>Welcome</h2>
+<p>Search a city to view real-time weather information.</p>
+
+</div>
+{% endif %}
+
+
+<div class="hero">
+
+<h2 class="city">
+{% if weather %}
+{{ weather.location.name }}
+{% else %}
+City
+{% endif %}
+</h2>
+
+<div class="icon-temp">
+<i class="material-icons weather-icon">wb_sunny</i>
+
+<h1 class="temp">
+{% if weather %}
+{{ weather.current.temp_c | round(0, 'floor') | int }}°
+{% else %}
+--°
+{% endif %}
+</h1>
+</div>
+
+<p class="description-text">
+{% if weather %}
+{{ weather.current.condition.text }}
+{% endif %}
+</p>
+
+<p class="date">
+{% if weather %}
+{{ weather.location.localtime }}
+{% endif %}
+</p>
+
+</div>
+
+
+
+<div class="stats">
+
+<div class="stat-card">
+<p>Wind</p>
+<h3 class="wind-speed">
+{% if weather %}
+{{ weather.current.wind_kph }} km/h
+{% else %}
+--
+{% endif %}
+</h3>
+</div>
+
+<div class="stat-card">
+<p>Humidity</p>
+<h3 class="humidity-value">
+{% if weather %}
+{{ weather.current.humidity }}%
+{% else %}
+--
+{% endif %}
+</h3>
+</div>
+
+<div class="stat-card">
+<p>Visibility</p>
+<h3 class="visibility-distance">
+{% if weather %}
+{% if weather.current.vis_km >= 10 %}
+10+ km
+{% else %}
+{{ weather.current.vis_km }} km
+{% endif %}
+{% else %}
+--
+{% endif %}
+</h3>
+</div>
+
+</div>
+
+
+
+<div class="details">
+
+<div>
+<p>Feels Like</p>
+<h4 class="feels-like">
+{% if weather %}
+{{ weather.current.feelslike_c | round(0, 'floor') | int }}°
+{% else %}
+--
+{% endif %}
+</h4>
+</div>
+
+<div>
+<p>Pressure</p>
+<h4 class="pressure">
+{% if weather %}
+{{ weather.current.pressure_mb }} mb
+{% else %}
+--
+{% endif %}
+</h4>
+</div>
+
+<div>
+<p>UV Index</p>
+<h4 class="uv-index">
+{% if weather %}
+{{ weather.current.uv }}
+{% else %}
+--
+{% endif %}
+</h4>
+</div>
+
+<div>
+<p>Cloud</p>
+<h4 class="cloud-percent">
+{% if weather %}
+{{ weather.current.cloud }}%
+{% else %}
+--
+{% endif %}
+</h4>
+</div>
+
+</div>
+
+
+<button class="forecast-toggle">
+Show Forecast ▼
+</button>
+
+
+
+<div class="forecast-panel hidden">
+
+<div class="forecast">
+
+{% if weather %}
+{% for day in weather.forecast.forecastday %}
+
+<div>
+<p>{{ day.date | datetimeformat }}</p>
+<h4>{{ day.day.avgtemp_c | round(0, 'floor') | int }}°</h4>
+</div>
+
+{% endfor %}
+{% endif %}
+
+</div>
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='weather.js') }}"></script>
+
+</body>
+</html>
