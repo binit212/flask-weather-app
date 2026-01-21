@@ -136,7 +136,7 @@ Weather effects are triggered dynamically:
 
 ## 👨‍💻 Author
 
-**Your Name**  
+**BINIT**
 GitHub: https://github.com/binit212
 
 ---
