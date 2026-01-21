@@ -10,7 +10,7 @@ This project demonstrates full-stack development using Flask, API integration, d
 
 👉 Live App:https://flask-weather-app-oldz.onrender.com 
 
-(Replace this with your deployed Render URL)
+
 
 ---
 
